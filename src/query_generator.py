@@ -212,7 +212,7 @@ def test_query_generator():
     test_questions = [
         "What are the top 5 products by revenue?",
       #  "Show me monthly revenue trends for 2016",
-       #"Which age group has the highest average order quantity?",
+      #  "Which age group has the highest average order quantity?",
       #  "Compare profit margins across different product categories"
     ]
     

@@ -1,6 +1,5 @@
 """
 Executive Summary Generator - Create business insights from data analysis using Gemini
-Updated for new google-genai SDK with rate limiting
 """
 from google import genai
 from config import Config
@@ -15,8 +14,7 @@ class SummaryGenerator:
         # Initialize the new Gemini client
         self.client = genai.Client(api_key=Config.GEMINI_API_KEY)
         
-        # Use gemini-2.0-flash (newest) or gemini-1.5-flash if quota issues
-        self.model_id = 'gemini-2.0-flash-exp'
+        self.model_id = 'gemini-2.0-flash'
         
         # Rate limiting: minimum seconds between requests
         self.min_delay = 5  # 5 seconds between requests
@@ -29,7 +27,7 @@ class SummaryGenerator:
         
         if time_since_last < self.min_delay:
             wait_time = self.min_delay - time_since_last
-            print(f"⏳ Rate limiting: waiting {wait_time:.1f}s...")
+            print(f"Rate limiting: waiting {wait_time:.1f}s...")
             time.sleep(wait_time)
         
         self.last_request_time = time.time()
@@ -84,7 +82,6 @@ Format with markdown headers and bullet points for readability.
             # Enforce rate limiting
             self._wait_for_rate_limit()
             
-            # Make API call with new SDK
             response = self.client.models.generate_content(
                 model=self.model_id,
                 contents=prompt
@@ -101,10 +98,6 @@ Format with markdown headers and bullet points for readability.
 
 Please wait a few minutes and try again.
 
-💡 To avoid this in production:
-- Enable billing at https://ai.google.dev/pricing for higher quota
-- Add longer delays between requests
-- Use batch processing for multiple analyses
 """
             
             return f"Error generating summary: {str(e)}"
@@ -285,7 +278,7 @@ def test_summary_generator():
         ]
     }
     
-    print("🧪 Testing Executive Summary Generator (with rate limiting)\n")
+    print("Testing Executive Summary Generator (with rate limiting)\n")
     
     summary = generator.generate_executive_summary(
         "What are the top products by revenue?",

@@ -221,7 +221,7 @@ def check_data_file():
 
 def check_gitignore():
     """Check if .gitignore properly protects .env"""
-    print("🔒 Checking .gitignore security...")
+    print("Checking .gitignore security...")
     
     if not os.path.exists('.gitignore'):
         print(".gitignore file not found!")

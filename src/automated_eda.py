@@ -5,6 +5,8 @@ import pandas as pd
 import numpy as np
 from sqlalchemy import text
 from config import Config
+import matplotlib
+matplotlib.use('Agg')  # Use non-interactive backend (must be before pyplot import!)
 import matplotlib.pyplot as plt
 import seaborn as sns
 from datetime import datetime
@@ -107,7 +109,7 @@ class AutomatedEDA:
                 insights.append(f"{col}: Range from {min_val:.2f} to {max_val:.2f}")
         
         # Insight 3: Categorical columns
-        categorical_cols = df.select_dtypes(include=['object']).columns.tolist()
+        categorical_cols = df.select_dtypes(include=['object', 'string']).columns.tolist()
         for col in categorical_cols[:3]:  # Limit to first 3
             unique_count = df[col].nunique()
             if unique_count <= 10:
@@ -134,7 +136,7 @@ class AutomatedEDA:
         numeric_cols = df.select_dtypes(include=[np.number]).columns.tolist()
         
         if not numeric_cols:
-            print("⚠️  No numeric columns to visualize")
+            print("No numeric columns to visualize")
             return []
         
         created_files = []
@@ -160,10 +162,10 @@ class AutomatedEDA:
             plt.savefig(filepath, dpi=300, bbox_inches='tight')
             plt.close()
             created_files.append(filepath)
-            print(f"📊 Created: {filepath}")
+            print(f"Created: {filepath}")
         
         # Visualization 2: Bar chart if there are categorical columns with aggregated data
-        categorical_cols = df.select_dtypes(include=['object']).columns.tolist()
+        categorical_cols = df.select_dtypes(include=['object', 'string']).columns.tolist()
         if categorical_cols and numeric_cols:
             cat_col = categorical_cols[0]
             num_col = numeric_cols[0]
@@ -182,7 +184,7 @@ class AutomatedEDA:
                 plt.savefig(filepath, dpi=300, bbox_inches='tight')
                 plt.close()
                 created_files.append(filepath)
-                print(f"📊 Created: {filepath}")
+                print(f"Created: {filepath}")
         
         return created_files
     
@@ -198,17 +200,17 @@ class AutomatedEDA:
             # Export as CSV
             csv_path = os.path.join(self.output_dir, f"{filename}.csv")
             df.to_csv(csv_path, index=False)
-            print(f"📁 Tableau CSV export: {csv_path}")
+            print(f"Tableau CSV export: {csv_path}")
             
             # Export as Excel
             excel_path = os.path.join(self.output_dir, f"{filename}.xlsx")
             df.to_excel(excel_path, index=False, engine='openpyxl')
-            print(f"📁 Tableau Excel export: {excel_path}")
+            print(f"Tableau Excel export: {excel_path}")
             
             return [csv_path, excel_path]
         
         except Exception as e:
-            print(f"❌ Error exporting for Tableau: {e}")
+            print(f"Error exporting for Tableau: {e}")
             return []
     
     def generate_eda_report(self, df, query_context, analysis_name="analysis"):
@@ -223,7 +225,7 @@ class AutomatedEDA:
         Returns:
             dict: Complete analysis results with file paths
         """
-        print(f"\n🔍 Performing Automated EDA...")
+        print(f"\nPerforming Automated EDA...")
         
         # Perform analysis
         analysis = self.analyze_results(df, query_context)
@@ -251,7 +253,7 @@ class AutomatedEDA:
                 f.write(f"  • {insight}\n")
         
         analysis['report_file'] = report_path
-        print(f"📄 EDA Report: {report_path}")
+        print(f"EDA Report: {report_path}")
         
         return analysis
 
@@ -260,21 +262,21 @@ def test_eda():
     eda = AutomatedEDA()
     
     # Test query
-    query = "SELECT * FROM sales_data LIMIT 1000"
-    print(f"🧪 Testing EDA with query: {query}")
+    query = "SELECT * FROM sales_data LIMIT 100"
+    print(f"Testing EDA with query: {query}")
     
     df, error = eda.execute_query(query)
     
     if error:
-        print(f"❌ Query error: {error}")
+        print(f"Query error: {error}")
         return
     
-    print(f"✅ Query executed successfully: {len(df)} rows")
+    print(f"Query executed successfully: {len(df)} rows")
     
     # Generate EDA report
     results = eda.generate_eda_report(df, "Test analysis of sales data", "test_analysis")
     
-    print("\n📊 Analysis Complete!")
+    print("\nAnalysis Complete!")
     print(f"Files created: {len(results.get('visualization_files', [])) + len(results.get('tableau_files', [])) + 1}")
 
 if __name__ == "__main__":
