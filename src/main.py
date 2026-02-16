@@ -198,7 +198,7 @@ def main():
     workflow = AnalyticsWorkflow()
     
     example_queries = [
-        "Generate a SQL query to retrieve overall top 10 products by revenue with their profit margins, quantities sold, and customer demographics. Add columns that would help to create a trend line over the year using this data."
+        "Generate a SQL query for detailed list of sales for the top 10 products including the Order Date, Category, Sub-category, Coountry, Region, Quantity, Number of Orders, Customer demographics (Age group , gender), Profit, and Revenue. Include the order_date as a single date column"
     ]
     
     print("\n" + "=" * 80)
