@@ -156,4 +156,4 @@ CREATE TABLE sales_data (
 
 ---
 
-*If this helped you, ⭐ the repo!*
+*If this helped you, ⭐ the repo :) *
