@@ -1,6 +1,6 @@
-#AI-Powered Sales Analytics System
+# AI-Powered Sales Analytics System
 
-##Overview
+## Overview
 This project automates the entire data analysis workflow from natural language query to actionable business insights. 
 Users ask questions in plain English, and the system automatically generates SQL queries, executes them, performs statistical analysis, creates visualizations, and produces executive summaries - all powered by Google's Gemini AI.
 **Key Impact:** Reduces routine data analysis time from 2-3 hours to ~5 minutes (60% time savings).
@@ -68,7 +68,7 @@ User Question → Gemini AI → SQL Query → PostgreSQL → Results →
 
 ---
 
-## 📊 Database Schema
+## Database Schema
 
 ### Table: `sales_data`
 
@@ -156,4 +156,4 @@ CREATE TABLE sales_data (
 
 ---
 
-*If this helped you, ⭐ the repo :) *
+*Thank You*
